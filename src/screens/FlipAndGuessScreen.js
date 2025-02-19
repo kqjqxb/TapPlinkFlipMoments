@@ -50,11 +50,36 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
   const [isPlayersWasVisible, setIsPlayersWasVisible] = useState(false);
   const [isCategoriesWasVisible, setIsCategoriesWasVisible] = useState(false);
   const [isGameWasStarted, setIsGameWasStarted] = useState(false);
+  const [isGameWasFinished, setIsGameWasFinished] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [modalVisible, setModalVisible] = useState(false);
   const [currentPlayer, setCurrentPlayer] = useState(0);
   const [currentWord, setCurrentWord] = useState('');
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [usedWords, setUsedWords] = useState([]);
+
+  const handleNextWord = () => {
+    if (usedWords.length === data.length) {
+      setIsGameWasFinished(true);
+      return;
+    }
+
+    let newWord;
+    do {
+      newWord = data[Math.floor(Math.random() * data.length)];
+    } while (usedWords.includes(newWord.id));
+
+    setUsedWords([...usedWords, newWord.id]);
+    setCurrentWord(newWord);
+  };
+
+  useEffect(() => {
+    if (isGameWasStarted) {
+      handleNextWord();
+    }
+  }, [isGameWasStarted]);
+
+
+
 
 
   const getDataByCategory = (category) => {
@@ -390,7 +415,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
             disabled={isGameWasStarted}
             onPress={() => {
               setIsGameWasStarted(true);
-              setCurrentWord(data[Math.floor(Math.random() * data.length)].title);
+              handleNextWord();
             }} style={{
               flex: 1,
               width: dimensions.width,
@@ -479,7 +504,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
 
                     }}
                   >
-                    {currentWord}
+                    {currentWord.title}
                   </Text>
 
                 </View>
@@ -549,7 +574,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
           }}>
             <TouchableOpacity
               onPress={() => {
-                setCurrentWord(data[Math.floor(Math.random() * data.length)].title);
+                handleNextWord();
               }}
               style={{
                 backgroundColor: '#FF3B30',
@@ -581,7 +606,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
 
             <TouchableOpacity
               onPress={() => {
-                setCurrentWord(data[Math.floor(Math.random() * data.length)].title);
+                handleNextWord();
               }}
               style={{
                 backgroundColor: '#34C759',
@@ -706,7 +731,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
               alignSelf: 'center',
               fontWeight: 600,
             }}>
-              Back to menu
+              Back to Menu
             </Text>
             <Text style={{
               marginBottom: dimensions.height * 0.016,
@@ -775,6 +800,163 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
             </View>
           </View>
         </View>
+      </Modal>
+
+
+
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isGameWasFinished}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <SafeAreaView style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <BlurView
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+            }}
+            blurType="light"
+            blurAmount={30}
+            reducedTransparencyFallbackColor="white"
+          />
+          <TouchableOpacity
+            onPress={() => {
+              setIsGameWasFinished(false);
+              setIsGameWasStarted(false);
+              setUsedWords([]);
+              setIsCategoriesWasVisible(false);
+              setIsPlayersWasVisible(false);
+              setPlayers(Array(playersAmount).fill(''));
+              setSelectedCategory('All Categories');
+              setCurrentPlayer(0);
+              setCurrentWord('');
+            }}
+            style={{
+              width: dimensions.width,
+              height: dimensions.height,
+
+              borderRadius: dimensions.width * 0.05,
+
+              paddingHorizontal: 0,
+              alignItems: 'center',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              elevation: 5,
+            }}>
+            <SafeAreaView style={{
+              flex: 1,
+              justifyContent: 'space-between',
+              marginVertical: dimensions.height * 0.07,
+            }}>
+
+              <Text
+                style={{
+                  fontFamily: fontPoppinsRegular,
+                  textAlign: "center",
+                  fontSize: dimensions.width * 0.053,
+                  padding: dimensions.height * 0.01,
+                  alignSelf: 'center',
+                  fontWeight: 600,
+                  color: 'white',
+                  textTransform: 'uppercase',
+
+
+                }}
+              >
+                Results
+              </Text>
+              <View>
+                <Text style={{
+                  textAlign: 'center',
+                  fontFamily: fontPoppinsRegular,
+                  fontSize: dimensions.width * 0.055,
+                  paddingHorizontal: dimensions.width * 0.07,
+                  alignSelf: 'center',
+                  fontWeight: 600,
+                  color: 'white',
+                  textTransform: 'uppercase'
+                }}>
+                  🥇 [Player Name]
+                </Text>
+                <Text style={{
+                  textAlign: 'center',
+                  fontFamily: fontPoppinsRegular,
+                  fontSize: dimensions.width * 0.055,
+                  paddingHorizontal: dimensions.width * 0.07,
+                  alignSelf: 'center',
+                  fontWeight: 600,
+                  color: 'white',
+                  textTransform: 'uppercase'
+                }}>
+                  x points
+                </Text>
+
+
+
+                <Text style={{
+                  marginTop: dimensions.height * 0.03,
+                  textAlign: 'center',
+                  fontFamily: fontPoppinsRegular,
+                  fontSize: dimensions.width * 0.055,
+                  paddingHorizontal: dimensions.width * 0.07,
+                  alignSelf: 'center',
+                  fontWeight: 600,
+                  color: 'white',
+                  textTransform: 'uppercase'
+                }}>
+                  🥈 [Player Name]
+                </Text>
+                <Text style={{
+                  textAlign: 'center',
+                  fontFamily: fontPoppinsRegular,
+                  fontSize: dimensions.width * 0.055,
+                  paddingHorizontal: dimensions.width * 0.07,
+                  alignSelf: 'center',
+                  fontWeight: 600,
+                  color: 'white',
+                  textTransform: 'uppercase'
+                }}>
+                  x points
+                </Text>
+              </View>
+
+
+              <Text
+                style={{
+                  fontFamily: fontPoppinsRegular,
+                  textAlign: "center",
+                  fontSize: dimensions.width * 0.043,
+                  padding: dimensions.height * 0.01,
+                  alignSelf: 'center',
+                  fontWeight: 600,
+                  color: 'white',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Tap to menu
+              </Text>
+
+            </SafeAreaView>
+
+
+          </TouchableOpacity>
+        </SafeAreaView>
       </Modal>
 
     </SafeAreaView>
