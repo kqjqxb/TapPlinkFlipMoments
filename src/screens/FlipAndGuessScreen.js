@@ -12,6 +12,8 @@ import {
   TextInput,
   Alert,
   Modal,
+  Animated,
+  Easing,
 } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import funnyWordsData from '../components/funnyWordsData';
@@ -55,14 +57,59 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
   const [currentPlayer, setCurrentPlayer] = useState(0);
   const [currentWord, setCurrentWord] = useState('');
   const [usedWords, setUsedWords] = useState([]);
-
+  const [flipAnim] = useState(new Animated.Value(0));
 
 
   const [scores, setScores] = useState(Array(players.length).fill(0));
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
 
+  const frontInterpolate = flipAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
+
+  const backInterpolate = flipAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['180deg', '360deg'],
+  });
+
+  const frontAnimatedStyle = {
+    transform: [
+      { rotateY: frontInterpolate }
+    ]
+  };
+
+  const backAnimatedStyle = {
+    transform: [
+      { rotateY: backInterpolate }
+    ]
+  };
+
+
+  const flipCard = () => {
+    Animated.sequence([
+      Animated.timing(flipAnim, {
+        toValue: 1,
+        duration: 400,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      Animated.timing(flipAnim, {
+        toValue: 0,
+        duration: 400,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      // handleNextWord();
+    });
+  };
+
+
+
   const handleNextWord = () => {
+    flipCard();
     if (usedWords.length === data.length) {
       setIsGameWasFinished(true);
       return;
@@ -524,7 +571,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
                   {currentWord.id > 0 && currentWord.id < 16 ? '🌍 Famous People' : currentWord.id >= 16 && currentWord.id < 31 ? '😂 Funny Words' : '🎬 Movies & TV'}
                 </Text>
 
-                <View style={{
+                <Animated.View style={{
                   marginTop: dimensions.height * 0.05,
                   width: dimensions.width * 0.631,
                   alignSelf: 'center',
@@ -535,26 +582,53 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
                   borderColor: 'white',
                   borderWidth: dimensions.width * 0.007,
                   height: dimensions.height * 0.48,
+                  backfaceVisibility: 'hidden',
+                  ...frontAnimatedStyle
                 }}>
-                  <Text
-                    style={{
-                      fontFamily: fontPoppinsRegular,
-                      textAlign: "center",
-                      fontSize: dimensions.width * 0.053,
-                      padding: dimensions.height * 0.01,
-                      right: dimensions.width * 0.0088,
-                      alignSelf: 'center',
-                      fontWeight: 600,
-                      color: 'white',
-                      textTransform: 'uppercase',
-
-
-                    }}
-                  >
+                  <Text style={{
+                    fontFamily: fontPoppinsRegular,
+                    textAlign: "center",
+                    fontSize: dimensions.width * 0.053,
+                    padding: dimensions.height * 0.01,
+                    right: dimensions.width * 0.0088,
+                    alignSelf: 'center',
+                    fontWeight: 600,
+                    color: 'white',
+                    textTransform: 'uppercase',
+                  }}>
                     {currentWord.title}
                   </Text>
-
-                </View>
+                </Animated.View>
+                <Animated.View style={{
+                  marginTop: dimensions.height * 0.05,
+                  width: dimensions.width * 0.631,
+                  alignSelf: 'center',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'transparent',
+                  borderRadius: dimensions.width * 0.05,
+                  borderColor: 'white',
+                  borderWidth: dimensions.width * 0.007,
+                  height: dimensions.height * 0.48,
+                  backfaceVisibility: 'hidden',
+                  position: 'absolute',
+                  top: dimensions.height * 0.086,
+                  ...backAnimatedStyle
+                }}>
+                  <Text style={{
+                    fontFamily: fontPoppinsRegular,
+                    textAlign: "center",
+                    fontSize: dimensions.width * 0.053,
+                    padding: dimensions.height * 0.01,
+                    right: dimensions.width * 0.0088,
+                    alignSelf: 'center',
+                    fontWeight: 600,
+                    color: 'white',
+                    textTransform: 'uppercase',
+                  }}>
+                    {currentWord.title}
+                  </Text>
+                </Animated.View>
 
 
               </View>
