@@ -13,7 +13,6 @@ import {
   Alert,
   Modal,
 } from 'react-native';
-import { Pressable, ScrollView } from 'react-native-gesture-handler';
 import { BlurView } from '@react-native-community/blur';
 import funnyWordsData from '../components/funnyWordsData';
 import famousPeopleData from '../components/famousPeopleData';
@@ -57,6 +56,12 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
   const [currentWord, setCurrentWord] = useState('');
   const [usedWords, setUsedWords] = useState([]);
 
+
+
+  const [scores, setScores] = useState(Array(players.length).fill(0));
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+
+
   const handleNextWord = () => {
     if (usedWords.length === data.length) {
       setIsGameWasFinished(true);
@@ -72,15 +77,24 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
     setCurrentWord(newWord);
   };
 
-  useEffect(() => {
-    if (isGameWasStarted) {
-      handleNextWord();
-    }
-  }, [isGameWasStarted]);
+  const handleNextPlayer = () => {
+    setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % players.length);
+  };
 
+  const handleSkipFlip = () => {
+    handleNextWord();
+    handleNextPlayer();
+  };
 
-
-
+  const handleGuessed = () => {
+    setScores((prevScores) => {
+      const newScores = [...prevScores];
+      newScores[currentPlayerIndex] += 1;
+      return newScores;
+    });
+    handleNextWord();
+    handleNextPlayer();
+  };
 
   const getDataByCategory = (category) => {
     switch (category) {
@@ -113,11 +127,6 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
   };
 
   useEffect(() => {
-    console.log('isGameWasStarted', isGameWasStarted);
-  }, [isGameWasStarted]);
-
-  useEffect(() => {
-    // Оновлює кількість полів при зміні playersAmount
     setPlayers(prev => {
       const updated = Array(playersAmount)
         .fill('')
@@ -125,6 +134,44 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
       return updated;
     });
   }, [playersAmount]);
+
+
+  useEffect(() => {
+    setPlayers(prev => {
+      const updated = Array(playersAmount)
+        .fill('')
+        .map((_, i) => prev[i] ?? '');
+      return updated;
+    });
+
+    setScores(prev => {
+      const updated = Array(playersAmount)
+        .fill(0)
+        .map((_, i) => prev[i] ?? 0);
+      return updated;
+    });
+  }, [playersAmount]);
+
+
+  const handleEndGame = () => {
+    setIsGameWasFinished(false);
+    setIsGameWasStarted(false);
+    setUsedWords([]);
+    setIsCategoriesWasVisible(false);
+    setIsPlayersWasVisible(false);
+    setPlayers(Array(playersAmount).fill(''));
+    setSelectedCategory('All Categories');
+    setCurrentPlayer(0);
+    setCurrentWord('');
+    setScores(Array(playersAmount).fill(0));
+    setCurrentPlayerIndex(0);
+    setPlayersAmount(2);
+  };
+
+
+  const sortedPlayers = players
+    .map((player, index) => ({ name: player, score: scores[index] }))
+    .sort((a, b) => b.score - a.score);
 
   return (
     <SafeAreaView style={{
@@ -435,7 +482,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
 
               }}
             >
-              it's {players[0]}'s turn!
+              it's {players[currentPlayerIndex]}'s turn!
             </Text>
 
 
@@ -573,9 +620,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
             alignItems: 'center',
           }}>
             <TouchableOpacity
-              onPress={() => {
-                handleNextWord();
-              }}
+              onPress={handleSkipFlip}
               style={{
                 backgroundColor: '#FF3B30',
                 padding: dimensions.width * 0.023,
@@ -605,9 +650,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
 
 
             <TouchableOpacity
-              onPress={() => {
-                handleNextWord();
-              }}
+              onPress={handleGuessed}
               style={{
                 backgroundColor: '#34C759',
                 padding: dimensions.width * 0.023,
@@ -832,15 +875,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
           />
           <TouchableOpacity
             onPress={() => {
-              setIsGameWasFinished(false);
-              setIsGameWasStarted(false);
-              setUsedWords([]);
-              setIsCategoriesWasVisible(false);
-              setIsPlayersWasVisible(false);
-              setPlayers(Array(playersAmount).fill(''));
-              setSelectedCategory('All Categories');
-              setCurrentPlayer(0);
-              setCurrentWord('');
+              handleEndGame();
             }}
             style={{
               width: dimensions.width,
@@ -882,58 +917,34 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
                 Results
               </Text>
               <View>
-                <Text style={{
-                  textAlign: 'center',
-                  fontFamily: fontPoppinsRegular,
-                  fontSize: dimensions.width * 0.055,
-                  paddingHorizontal: dimensions.width * 0.07,
-                  alignSelf: 'center',
-                  fontWeight: 600,
-                  color: 'white',
-                  textTransform: 'uppercase'
-                }}>
-                  🥇 [Player Name]
-                </Text>
-                <Text style={{
-                  textAlign: 'center',
-                  fontFamily: fontPoppinsRegular,
-                  fontSize: dimensions.width * 0.055,
-                  paddingHorizontal: dimensions.width * 0.07,
-                  alignSelf: 'center',
-                  fontWeight: 600,
-                  color: 'white',
-                  textTransform: 'uppercase'
-                }}>
-                  x points
-                </Text>
-
-
-
-                <Text style={{
-                  marginTop: dimensions.height * 0.03,
-                  textAlign: 'center',
-                  fontFamily: fontPoppinsRegular,
-                  fontSize: dimensions.width * 0.055,
-                  paddingHorizontal: dimensions.width * 0.07,
-                  alignSelf: 'center',
-                  fontWeight: 600,
-                  color: 'white',
-                  textTransform: 'uppercase'
-                }}>
-                  🥈 [Player Name]
-                </Text>
-                <Text style={{
-                  textAlign: 'center',
-                  fontFamily: fontPoppinsRegular,
-                  fontSize: dimensions.width * 0.055,
-                  paddingHorizontal: dimensions.width * 0.07,
-                  alignSelf: 'center',
-                  fontWeight: 600,
-                  color: 'white',
-                  textTransform: 'uppercase'
-                }}>
-                  x points
-                </Text>
+                {sortedPlayers.map((player, index) => (
+                  <View key={index} style={{ marginTop: index > 0 ? dimensions.height * 0.03 : 0 }}>
+                    <Text style={{
+                      textAlign: 'center',
+                      fontFamily: fontPoppinsRegular,
+                      fontSize: dimensions.width * 0.055,
+                      paddingHorizontal: dimensions.width * 0.07,
+                      alignSelf: 'center',
+                      fontWeight: 600,
+                      color: 'white',
+                      textTransform: 'uppercase'
+                    }}>
+                      {index === 0 ? '🥇' : index === 1 ? '🥈' : ''} {player.name}
+                    </Text>
+                    <Text style={{
+                      textAlign: 'center',
+                      fontFamily: fontPoppinsRegular,
+                      fontSize: dimensions.width * 0.055,
+                      paddingHorizontal: dimensions.width * 0.07,
+                      alignSelf: 'center',
+                      fontWeight: 600,
+                      color: 'white',
+                      textTransform: 'uppercase'
+                    }}>
+                      {player.score} points
+                    </Text>
+                  </View>
+                ))}
               </View>
 
 
