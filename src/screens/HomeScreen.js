@@ -23,6 +23,8 @@ import AboutScreen from './AboutScreen';
 import MelodiesScreen from './MelodiesScreen';
 import GameScreen from './GameScreen';
 import FlipAndGuessScreen from './FlipAndGuessScreen';
+import Sound from 'react-native-sound';
+import { useAudio } from '../context/AudioContext';
 
 
 const fontPoppinsRegular = 'Poppins-Regular';
@@ -41,7 +43,57 @@ const HomeScreen = () => {
   const [isNotificationEnabled, setNotificationEnabled] = useState(true);
   const [isSoundEnabled, setSoundEnabled] = useState(true);
   const [isMusicEnabled, setMusicEnabled] = useState(true);
+  const { volume } = useAudio();
+  const [indexOfTheCurrentTrack, setIndexOfTheCurrentTrack] = useState(0);
+  const [sound, setSound] = useState(null);
 
+  const tracks = ['bgMusicParty.wav', 'bgMusicParty.wav'];
+
+
+
+ 
+
+  useEffect(() => {
+    playTrack(indexOfTheCurrentTrack);
+
+    return () => {
+      if (sound) {
+        sound.stop(() => {
+          sound.release();
+        });
+      }
+    };
+  }, [indexOfTheCurrentTrack]);
+
+  useEffect(() => {
+    if (sound) {
+      sound.setVolume(volume);
+    }
+  }, [volume]);
+
+  const playTrack = (index) => {
+    if (sound) {
+      sound.stop(() => {
+        sound.release();
+      });
+    }
+
+    const newSound = new Sound(tracks[index], Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('Помилка завантаження треку:', error);
+        return;
+      }
+      newSound.setVolume(volume);
+      newSound.play((success) => {
+        if (success) {
+          setIndexOfTheCurrentTrack((prevIndex) => (prevIndex + 1) % tracks.length);
+        } else {
+          console.log('Помилка відтворення треку');
+        }
+      });
+      setSound(newSound);
+    });
+  };
 
   const loadSettings = async () => {
     try {
@@ -53,11 +105,36 @@ const HomeScreen = () => {
       if (soundValue !== null) setSoundEnabled(JSON.parse(soundValue));
       if (vibrationValue !== null) setVibrationEnabled(JSON.parse(vibrationValue));
       if (notificationValue !== null) setNotificationEnabled(JSON.parse(notificationValue));
-      if (musicValue !== null) setMusicEnabled(JSON.parse(musicValue));
+      if (musicValue !== null) {
+        const isMusicEnabled = JSON.parse(musicValue);
+        setMusicEnabled(isMusicEnabled);
+        if (sound) {
+          sound.setVolume(isMusicEnabled ? 1 : 0);
+        }
+      }
     } catch (error) {
       console.error("Error loading settings:", error);
     }
   };
+
+
+  useEffect(() => {
+    const setVolumeBasedOnMusicEnabled = async () => {
+      try {
+        const musicValue = await AsyncStorage.getItem('isMusicEnabled');
+        if (musicValue !== null) {
+          const isMusicEnabled = JSON.parse(musicValue);
+          if (sound) {
+            sound.setVolume(isMusicEnabled ? 1 : 0);
+          }
+        }
+      } catch (error) {
+        console.error("Error setting volume based on music enabled:", error);
+      }
+    };
+  
+    setVolumeBasedOnMusicEnabled();
+  }, [sound, isMusicEnabled]);
 
 
   useEffect(() => {
@@ -255,7 +332,7 @@ const HomeScreen = () => {
       ) : selectedScreen === 'About' ? (
         <AboutScreen setSelectedScreen={setSelectedScreen} />
       ) : selectedScreen === 'FlipAndGuess' ? (
-        <FlipAndGuessScreen setSelectedScreen={setSelectedScreen} selectedScreen={selectedScreen} />
+        <FlipAndGuessScreen setSelectedScreen={setSelectedScreen} selectedScreen={selectedScreen} isVibrationEnabled={isVibrationEnabled}/>
       ) : selectedScreen === 'Game' ? (
         <GameScreen setSelectedScreen={setSelectedScreen} selectedLevel={selectedLevel} setSelectedLevel={setSelectedLevel} />
       ) : null}

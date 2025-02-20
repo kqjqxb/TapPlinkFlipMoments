@@ -17,7 +17,7 @@ import { AudioProvider, useAudio } from './src/context/AudioContext';
 
 const Stack = createNativeStackNavigator();
 
-const MelodyKingStack = () => {
+const TapPlinkStack = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Provider store={store}>
@@ -95,4 +95,4 @@ const AppNavigator = () => {
 };
 
 
-export default MelodyKingStack;
+export default TapPlinkStack;

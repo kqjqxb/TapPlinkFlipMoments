@@ -1,8 +1,8 @@
 import React from 'react';
-import MelodyKingStack from './StackNavigator';
+import TapPlinkStack from './StackNavigator';
 
 function App() {
-  return <MelodyKingStack />;
+  return <TapPlinkStack />;
 }
 
 export default App;

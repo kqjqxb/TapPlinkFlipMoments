@@ -19,6 +19,7 @@ import { BlurView } from '@react-native-community/blur';
 import funnyWordsData from '../components/funnyWordsData';
 import famousPeopleData from '../components/famousPeopleData';
 import moviesAndTVData from '../components/moviesAndTVData';
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 
 const allData = [...funnyWordsData, ...famousPeopleData, ...moviesAndTVData];
 
@@ -44,7 +45,7 @@ const categoies = [
 
 ]
 
-const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
+const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen, isVibrationEnabled }) => {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
   const [playersAmount, setPlayersAmount] = useState(2);
   const [players, setPlayers] = useState(Array(playersAmount).fill(''));
@@ -129,11 +130,23 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen }) => {
   };
 
   const handleSkipFlip = () => {
+    if (isVibrationEnabled) {
+      ReactNativeHapticFeedback.trigger("impactMedium", {
+        enableVibrateFallback: true,
+        ignoreAndroidSystemSettings: false,
+      });
+    }
     handleNextWord();
     handleNextPlayer();
   };
 
   const handleGuessed = () => {
+    if (isVibrationEnabled) {
+      ReactNativeHapticFeedback.trigger("impactLight", {
+        enableVibrateFallback: true,
+        ignoreAndroidSystemSettings: false,
+      });
+    }
     setScores((prevScores) => {
       const newScores = [...prevScores];
       newScores[currentPlayerIndex] += 1;
