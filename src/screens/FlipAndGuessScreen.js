@@ -20,6 +20,8 @@ import funnyWordsData from '../components/funnyWordsData';
 import famousPeopleData from '../components/famousPeopleData';
 import moviesAndTVData from '../components/moviesAndTVData';
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
+import Sound from 'react-native-sound';
+import { useAudio } from '../context/AudioContext';
 
 const allData = [...funnyWordsData, ...famousPeopleData, ...moviesAndTVData];
 
@@ -45,7 +47,7 @@ const categoies = [
 
 ]
 
-const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen, isVibrationEnabled }) => {
+const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen, isVibrationEnabled, isSoundEnabled }) => {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
   const [playersAmount, setPlayersAmount] = useState(2);
   const [players, setPlayers] = useState(Array(playersAmount).fill(''));
@@ -63,6 +65,30 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen, isVibrationEnab
 
   const [scores, setScores] = useState(Array(players.length).fill(0));
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+
+
+
+  const { volume } = useAudio();
+  const sound = 'sound.wav'
+
+Sound.setCategory('Playback');
+
+    const playSound = (soundFile) => {
+        const sound = new Sound(soundFile, Sound.MAIN_BUNDLE, (error) => {
+            sound.setVolume(volume);
+            if (error) {
+                console.log('Помилка при завантаженні файлу:', error);
+                return;
+            }
+            sound.play((success) => {
+                if (!success) {
+                    console.log('Помилка при відтворенні звуку');
+                }
+            });
+        });
+    };
+
+
 
 
   const frontInterpolate = flipAnim.interpolate({
@@ -141,6 +167,7 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen, isVibrationEnab
   };
 
   const handleGuessed = () => {
+    if(isSoundEnabled) playSound(sound);
     if (isVibrationEnabled) {
       ReactNativeHapticFeedback.trigger("impactLight", {
         enableVibrateFallback: true,

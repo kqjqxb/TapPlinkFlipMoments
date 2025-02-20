@@ -332,7 +332,7 @@ const HomeScreen = () => {
       ) : selectedScreen === 'About' ? (
         <AboutScreen setSelectedScreen={setSelectedScreen} />
       ) : selectedScreen === 'FlipAndGuess' ? (
-        <FlipAndGuessScreen setSelectedScreen={setSelectedScreen} selectedScreen={selectedScreen} isVibrationEnabled={isVibrationEnabled}/>
+        <FlipAndGuessScreen setSelectedScreen={setSelectedScreen} selectedScreen={selectedScreen} isVibrationEnabled={isVibrationEnabled} isSoundEnabled={isSoundEnabled}/>
       ) : selectedScreen === 'Game' ? (
         <GameScreen setSelectedScreen={setSelectedScreen} selectedLevel={selectedLevel} setSelectedLevel={setSelectedLevel} />
       ) : null}
