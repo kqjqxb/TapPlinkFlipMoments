@@ -9,13 +9,6 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-
-
-const fontLuckiestGuyRegular = 'LuckiestGuy-Regular'
-const fontSFProRegular = 'SFProText-Regular'
-
-
-
 const fontPoppinsRegular = 'Poppins-Regular';
 
 const AboutScreen = ({ setSelectedScreen }) => {
@@ -78,11 +71,6 @@ const AboutScreen = ({ setSelectedScreen }) => {
           About
         </Text>
 
-
-
-
-
-
         <TouchableOpacity
           disabled={true}
           style={{
@@ -102,20 +90,14 @@ const AboutScreen = ({ setSelectedScreen }) => {
             }}
             resizeMode="contain"
           />
-
         </TouchableOpacity>
-
       </View>
 
-      <ScrollView style={{
-        
-      }}>
-
+      <ScrollView >
         <View style={{
           marginTop: dimensions.height * 0.03,
           paddingBottom: dimensions.height * 0.16,
         }}>
-
           <View style={{
             alignItems: 'center',
             zIndex: 0,
@@ -140,7 +122,6 @@ const AboutScreen = ({ setSelectedScreen }) => {
             </Text>
           </View>
 
-
           <View style={{
             alignItems: 'center',
             zIndex: 0,
@@ -151,7 +132,6 @@ const AboutScreen = ({ setSelectedScreen }) => {
             paddingVertical: dimensions.height * 0.025,
             paddingBottom: dimensions.height * 0.03,
             marginTop: dimensions.height * 0.03,
-
           }}>
             <Text
               style={{
@@ -184,7 +164,6 @@ const AboutScreen = ({ setSelectedScreen }) => {
               🎉 Perfect for game nights and parties!
             </Text>
           </View>
-
 
           <View style={{
             alignItems: 'center',
@@ -231,8 +210,6 @@ const AboutScreen = ({ setSelectedScreen }) => {
           </View>
         </View>
       </ScrollView>
-
-
     </SafeAreaView>
   );
 };

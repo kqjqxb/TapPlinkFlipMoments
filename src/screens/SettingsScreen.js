@@ -9,14 +9,6 @@ import {
   Image,
   Switch,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-
-
-
-const fontLuckiestGuyRegular = 'LuckiestGuy-Regular'
-const fontSFProRegular = 'SFProText-Regular'
-
-
 
 const fontPoppinsRegular = 'Poppins-Regular';
 
@@ -114,11 +106,6 @@ const SettingsScreen = ({ setSelectedScreen, isNotificationEnabled, setNotificat
           Settings
         </Text>
 
-
-
-
-
-
         <TouchableOpacity
           disabled={true}
           style={{
@@ -138,9 +125,7 @@ const SettingsScreen = ({ setSelectedScreen, isNotificationEnabled, setNotificat
             }}
             resizeMode="contain"
           />
-
         </TouchableOpacity>
-
       </View>
 
       <View
@@ -256,8 +241,6 @@ const SettingsScreen = ({ setSelectedScreen, isNotificationEnabled, setNotificat
           value={isNotificationEnabled}
         />
       </View>
-
-
     </SafeAreaView>
   );
 };

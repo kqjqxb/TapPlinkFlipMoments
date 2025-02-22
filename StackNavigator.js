@@ -33,11 +33,11 @@ const TapPlinkStack = () => {
 
 const AppNavigator = () => {
   const dispatch = useDispatch();
-  const [isOnbWasVisibleHere, setIsOnbWasVisibleHere] = useState(false);
+  const [isTapPlinkOnbVisible, setIsTapPlinkOnbVisible] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
 
-  const [initializingMelodyApp, setInitializingMelodyApp] = useState(true);
+  const [initializingTapPlinkApp, setInitializingTapPlinkApp] = useState(true);
 
   useEffect(() => {
     dispatch(loadUserData());
@@ -53,23 +53,23 @@ const AppNavigator = () => {
 
         if (storedThisUser) {
           setUser(JSON.parse(storedThisUser));
-          setIsOnbWasVisibleHere(false);
+          setIsTapPlinkOnbVisible(false);
         } else if (isOnbWasVisible) {
-          setIsOnbWasVisibleHere(false);
+          setIsTapPlinkOnbVisible(false);
         } else {
-          setIsOnbWasVisibleHere(true);
+          setIsTapPlinkOnbVisible(true);
           await AsyncStorage.setItem('isOnbWasVisible', 'true');
         }
       } catch (error) {
         console.error('Error loading of cur user', error);
       } finally {
-        setInitializingMelodyApp(false);
+        setInitializingTapPlinkApp(false);
       }
     };
     loadThisUser();
   }, [setUser]);
 
-  if (initializingMelodyApp) {
+  if (initializingTapPlinkApp) {
     return (
       <View style={{
         backgroundColor: 'rgba(12, 132, 167, 1)',
@@ -85,7 +85,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <AudioProvider>
-        <Stack.Navigator initialRouteName={isOnbWasVisibleHere ? 'OnboardingScreen' : 'OnboardingScreen'}>
+        <Stack.Navigator initialRouteName={isTapPlinkOnbVisible ? 'OnboardingScreen' : 'Home'}>
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} options={{ headerShown: false }} />
         </Stack.Navigator>

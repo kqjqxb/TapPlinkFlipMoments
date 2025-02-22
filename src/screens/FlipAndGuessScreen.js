@@ -8,9 +8,7 @@ import {
   SafeAreaView,
   Dimensions,
   Image,
-  Switch,
   TextInput,
-  Alert,
   Modal,
   Animated,
   Easing,
@@ -67,7 +65,6 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen, isVibrationEnab
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
 
-
   const { volume } = useAudio();
   const sound = 'sound.wav'
 
@@ -87,9 +84,6 @@ Sound.setCategory('Playback');
             });
         });
     };
-
-
-
 
   const frontInterpolate = flipAnim.interpolate({
     inputRange: [0, 1],
@@ -129,7 +123,6 @@ Sound.setCategory('Playback');
         useNativeDriver: true,
       }),
     ]).start(() => {
-      // handleNextWord();
     });
   };
 
@@ -958,9 +951,6 @@ Sound.setCategory('Playback');
           </View>
         </View>
       </Modal>
-
-
-
 
       <Modal
         animationType="fade"

@@ -4,14 +4,9 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  StyleSheet,
   Dimensions,
-  Share,
-  Animated,
-  Easing,
   ImageBackground,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -20,11 +15,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SettingsScreen from './SettingsScreen';
 import AboutScreen from './AboutScreen';
-import MelodiesScreen from './MelodiesScreen';
-import GameScreen from './GameScreen';
 import FlipAndGuessScreen from './FlipAndGuessScreen';
 import Sound from 'react-native-sound';
 import { useAudio } from '../context/AudioContext';
+import TapPlinkRaceScreen from './TapPlinkRaceScreen';
 
 
 const fontPoppinsRegular = 'Poppins-Regular';
@@ -33,11 +27,6 @@ const HomeScreen = () => {
 
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
   const [selectedScreen, setSelectedScreen] = useState('Home');
-  
-
-  const [isLevelsVisible, setIsLevelsVisible] = useState(false);
-  const [selectedLevel, setSelectedLevel] = useState(1);
-  const [completedLevels, setCompletedLevels] = useState([]);
 
   const [isVibrationEnabled, setVibrationEnabled] = useState(true);
   const [isNotificationEnabled, setNotificationEnabled] = useState(true);
@@ -136,55 +125,13 @@ const HomeScreen = () => {
     setVolumeBasedOnMusicEnabled();
   }, [sound, isMusicEnabled]);
 
-
-  useEffect(() => {
-    const loadCompletedLevels = async () => {
-      try {
-        const storedLevels = await AsyncStorage.getItem('completedLevels');
-        if (storedLevels !== null) {
-          setCompletedLevels(JSON.parse(storedLevels));
-        } else {
-          const initialLevels = [1];
-          await AsyncStorage.setItem('completedLevels', JSON.stringify(initialLevels));
-          setCompletedLevels(initialLevels);
-        }
-      } catch (error) {
-        console.error('Failed to load completed levels:', error);
-      }
-    };
-
-    loadCompletedLevels();
-  }, [selectedLevel, selectedScreen]);
-
-
-  const handleLevelPress = async (lvl) => {
-    if (completedLevels.includes(lvl)) {
-      setSelectedLevel(lvl);
-      setSelectedScreen('Game');
-    } else {
-      Alert.alert('Level not completed', 'You have not completed this level yet.');
-    }
-  };
-
   useEffect(() => {
     loadSettings();
   }, [selectedScreen]);
 
-
-  useEffect(() => {
-    console.log(`isSound is ` + isSoundEnabled)
-  }, [isSoundEnabled])
-
-
-  useEffect(() => {
-    setIsLevelsVisible(false);
-  }, [selectedScreen]);
-
-
-
   return (
     <ImageBackground
-      source={selectedScreen === 'Home' ? require('../assets/images/onboardingBackground.png') : require('../assets/images/homeScreenImageBg.png') }
+      source={selectedScreen === 'Home' ? require('../assets/images/onboardingBackground.png') : selectedScreen === 'TapPlinkRace' ? require('../assets/images/tapPlinkBg.png') :  require('../assets/images/homeScreenImageBg.png') }
       style={{ flex: 1, alignItems: 'center', width: '100%' }}
       resizeMode="cover"
     >
@@ -290,7 +237,7 @@ const HomeScreen = () => {
 
             <TouchableOpacity
               onPress={() => {
-                
+                setSelectedScreen('TapPlinkRace');
               }}
               style={{
                 alignSelf: 'center',
@@ -333,8 +280,8 @@ const HomeScreen = () => {
         <AboutScreen setSelectedScreen={setSelectedScreen} />
       ) : selectedScreen === 'FlipAndGuess' ? (
         <FlipAndGuessScreen setSelectedScreen={setSelectedScreen} selectedScreen={selectedScreen} isVibrationEnabled={isVibrationEnabled} isSoundEnabled={isSoundEnabled}/>
-      ) : selectedScreen === 'Game' ? (
-        <GameScreen setSelectedScreen={setSelectedScreen} selectedLevel={selectedLevel} setSelectedLevel={setSelectedLevel} />
+      ) : selectedScreen === 'TapPlinkRace' ? (
+        <TapPlinkRaceScreen setSelectedScreen={setSelectedScreen} isSoundEnabled={isSoundEnabled}/>
       ) : null}
     </ImageBackground>
   );
