@@ -68,22 +68,22 @@ const FlipAndGuessScreen = ({ setSelectedScreen, selectedScreen, isVibrationEnab
   const { volume } = useAudio();
   const sound = 'sound.wav'
 
-Sound.setCategory('Playback');
+  Sound.setCategory('Playback');
 
-    const playSound = (soundFile) => {
-        const sound = new Sound(soundFile, Sound.MAIN_BUNDLE, (error) => {
-            sound.setVolume(volume);
-            if (error) {
-                console.log('Помилка при завантаженні файлу:', error);
-                return;
-            }
-            sound.play((success) => {
-                if (!success) {
-                    console.log('Помилка при відтворенні звуку');
-                }
-            });
-        });
-    };
+  const playSound = (soundFile) => {
+    const sound = new Sound(soundFile, Sound.MAIN_BUNDLE, (error) => {
+      sound.setVolume(volume);
+      if (error) {
+        console.log('Помилка при завантаженні файлу:', error);
+        return;
+      }
+      sound.play((success) => {
+        if (!success) {
+          console.log('Помилка при відтворенні звуку');
+        }
+      });
+    });
+  };
 
   const frontInterpolate = flipAnim.interpolate({
     inputRange: [0, 1],
@@ -160,7 +160,7 @@ Sound.setCategory('Playback');
   };
 
   const handleGuessed = () => {
-    if(isSoundEnabled) playSound(sound);
+    if (isSoundEnabled) playSound(sound);
     if (isVibrationEnabled) {
       ReactNativeHapticFeedback.trigger("impactLight", {
         enableVibrateFallback: true,
@@ -631,6 +631,24 @@ Sound.setCategory('Playback');
                   }}>
                     {currentWord.title}
                   </Text>
+
+                  {currentWord.id >= 16 && currentWord.id < 31 && (
+                    <Text
+                      style={{
+                        fontFamily: fontPoppinsRegular,
+                        textAlign: "center",
+                        fontSize: dimensions.width * 0.034,
+                        padding: dimensions.height * 0.01,
+                        right: dimensions.width * 0.0088,
+                        alignSelf: 'center',
+                        fontWeight: 600,
+                        color: 'white',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      ({currentWord.meaning})
+                    </Text>
+                  )}
                 </Animated.View>
                 <Animated.View style={{
                   marginTop: dimensions.height * 0.05,

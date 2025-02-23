@@ -203,7 +203,9 @@ const HomeScreen = () => {
 
 
 
-          <View>
+          <View style={{
+            marginBottom: dimensions.height * 0.05,
+          }}>
 
             <TouchableOpacity
               onPress={() => {
