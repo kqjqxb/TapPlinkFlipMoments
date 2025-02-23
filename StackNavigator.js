@@ -44,15 +44,15 @@ const AppNavigator = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const loadThisUser = async () => {
+    const loadPlinkUser = async () => {
       try {
         const deviceId = await DeviceInfo.getUniqueId();
         const storageKey = `currentUser_${deviceId}`;
-        const storedThisUser = await AsyncStorage.getItem(storageKey);
+        const storedPlinkUser = await AsyncStorage.getItem(storageKey);
         const isOnbWasVisible = await AsyncStorage.getItem('isOnbWasVisible');
 
-        if (storedThisUser) {
-          setUser(JSON.parse(storedThisUser));
+        if (storedPlinkUser) {
+          setUser(JSON.parse(storedPlinkUser));
           setIsTapPlinkOnbVisible(false);
         } else if (isOnbWasVisible) {
           setIsTapPlinkOnbVisible(false);
@@ -66,7 +66,7 @@ const AppNavigator = () => {
         setInitializingTapPlinkApp(false);
       }
     };
-    loadThisUser();
+    loadPlinkUser();
   }, [setUser]);
 
   if (initializingTapPlinkApp) {

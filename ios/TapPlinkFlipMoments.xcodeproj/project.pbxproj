@@ -28,7 +28,6 @@
 		95E5815712964E44AC652A4F /* SFProText-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C829930FEDC46E19BFF7EF1 /* SFProText-LightItalic.ttf */; };
 		A054563CF84D4D309BD31E81 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7D8E852025C426AB1B9F540 /* SFProText-Bold.ttf */; };
 		AF95E00FFD9B41B080798448 /* SFProText-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48BAB061CA1344AF90BC4243 /* SFProText-Light.ttf */; };
-		B09A1D582BA6428BAC4C339E /* LuckiestGuy-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 336FD0F44D4F45EEA3375ADE /* LuckiestGuy-Regular.ttf */; };
 		BA713F55F2B84B48A2DC1854 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 482616D6294743FB87D1F7A1 /* Montserrat-Bold.ttf */; };
 		BCAC2C914EA4469398BDC2D7 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D755EA0CDD284B5387E53E56 /* Poppins-Black.ttf */; };
 		C2AB868C5C8243938E35F3F7 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7B66E6206BE4026A49ACAA9 /* Montserrat-Black.ttf */; };
@@ -54,7 +53,6 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = TapPlinkFlipMoments/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		155B28B480F544219484A240 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
 		2C829930FEDC46E19BFF7EF1 /* SFProText-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFProText-LightItalic.ttf"; path = "../src/assets/fonts/SFProText-LightItalic.ttf"; sourceTree = "<group>"; };
-		336FD0F44D4F45EEA3375ADE /* LuckiestGuy-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "LuckiestGuy-Regular.ttf"; path = "../src/assets/fonts/LuckiestGuy-Regular.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-TapPlinkFlipMoments.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TapPlinkFlipMoments.debug.xcconfig"; path = "Target Support Files/Pods-TapPlinkFlipMoments/Pods-TapPlinkFlipMoments.debug.xcconfig"; sourceTree = "<group>"; };
 		467E2D6F39E44B12B494389E /* SFProText-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFProText-Semibold.ttf"; path = "../src/assets/fonts/SFProText-Semibold.ttf"; sourceTree = "<group>"; };
 		482616D6294743FB87D1F7A1 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
@@ -121,7 +119,6 @@
 			children = (
 				CE171DC82D64DD5F00035A7C /* bgMusicParty.wav */,
 				CE171DC92D64DD5F00035A7C /* sound.wav */,
-				336FD0F44D4F45EEA3375ADE /* LuckiestGuy-Regular.ttf */,
 				D7B66E6206BE4026A49ACAA9 /* Montserrat-Black.ttf */,
 				482616D6294743FB87D1F7A1 /* Montserrat-Bold.ttf */,
 				AFF4F7D45E4F4CD08A91B110 /* Montserrat-Light.ttf */,
@@ -253,7 +250,6 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				8864E42245DAE85AA2DE12D6 /* PrivacyInfo.xcprivacy in Resources */,
-				B09A1D582BA6428BAC4C339E /* LuckiestGuy-Regular.ttf in Resources */,
 				C2AB868C5C8243938E35F3F7 /* Montserrat-Black.ttf in Resources */,
 				BA713F55F2B84B48A2DC1854 /* Montserrat-Bold.ttf in Resources */,
 				CE171DCA2D64DD5F00035A7C /* sound.wav in Resources */,
@@ -380,6 +376,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TapPlinkFlipMoments/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -393,7 +390,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tapplink.flipmoments.app;
 				PRODUCT_NAME = TapPlinkFlipMoments;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -408,6 +405,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = TapPlinkFlipMoments/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -420,7 +418,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tapplink.flipmoments.app;
 				PRODUCT_NAME = TapPlinkFlipMoments;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -496,10 +494,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -568,10 +563,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
