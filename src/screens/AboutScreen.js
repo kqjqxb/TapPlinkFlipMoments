@@ -32,8 +32,7 @@ const AboutScreen = ({ setSelectedScreen }) => {
       }}>
         <TouchableOpacity
           onPress={() => {
-            // setSelectedScreen('Home');
-            backFunc();
+            setSelectedScreen('Home');
           }}
           style={{
             alignItems: 'center',

@@ -738,8 +738,7 @@ const TapPlinkRaceScreen = ({ setSelectedScreen, selectedScreen, isVibrationEnab
           />
           <TouchableOpacity
             onPress={() => {
-              // handleEndGame();
-              handleWantToExit();
+              handleEndGame();
             }}
             style={{
               width: dimensions.width,

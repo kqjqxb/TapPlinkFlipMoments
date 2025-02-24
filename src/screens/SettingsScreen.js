@@ -67,7 +67,7 @@ const SettingsScreen = ({ setSelectedScreen, isNotificationEnabled, setNotificat
       }}>
         <TouchableOpacity
           onPress={() => {
-            // setSelectedScreen('Home');
+            setSelectedScreen('Home');
           }}
           style={{
             alignItems: 'center',
